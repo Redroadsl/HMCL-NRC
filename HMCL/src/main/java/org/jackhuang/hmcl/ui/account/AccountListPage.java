@@ -25,37 +25,17 @@ import org.jackhuang.hmcl.ui.construct.AdvancedListItem;
 import org.jackhuang.hmcl.ui.construct.ClassTitle;
 import org.jackhuang.hmcl.ui.decorator.DecoratorAnimatedPage;
 import org.jackhuang.hmcl.ui.decorator.DecoratorPage;
-import org.jackhuang.hmcl.util.RegionUtils;
 import org.jackhuang.hmcl.util.javafx.BindingMapping;
 import org.jackhuang.hmcl.util.javafx.MappedObservableList;
 
 import java.util.Locale;
 
-import static org.jackhuang.hmcl.setting.SettingsManager.userSettings;
 import static org.jackhuang.hmcl.util.i18n.I18n.i18n;
 import static org.jackhuang.hmcl.util.javafx.ExtendedProperties.createSelectedItemPropertyFor;
 
 public final class AccountListPage extends DecoratorAnimatedPage implements DecoratorPage {
-    static final BooleanProperty RESTRICTED = new SimpleBooleanProperty(true);
-
-    static {
-        String property = System.getProperty("hmcl.offline.auth.restricted", "auto");
-
-        if ("false".equals(property)
-                || "auto".equals(property) && "CN".equals(RegionUtils.MACHINE_REGION)
-                || SettingsManager.userSettings().enableOfflineAccountProperty().get())
-            RESTRICTED.set(false);
-        else
-            userSettings().enableOfflineAccountProperty().addListener(new ChangeListener<Boolean>() {
-                @Override
-                public void changed(ObservableValue<? extends Boolean> o, Boolean oldValue, Boolean newValue) {
-                    if (newValue) {
-                        userSettings().enableOfflineAccountProperty().removeListener(this);
-                        RESTRICTED.set(false);
-                    }
-                }
-            });
-    }
+    /// Whether offline accounts are unavailable. Disabled so that every user can create offline accounts.
+    static final BooleanProperty RESTRICTED = new SimpleBooleanProperty(false);
 
     private final ObservableList<AccountListItem> items;
     private final ReadOnlyObjectWrapper<State> state = new ReadOnlyObjectWrapper<>(State.fromTitle(i18n("account.manage")));

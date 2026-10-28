@@ -4,8 +4,6 @@ package org.jackhuang.hmcl.terracotta;
 
 import com.google.gson.JsonParseException;
 import org.glavo.url.WebURL;
-import org.jackhuang.hmcl.util.RegionUtils;
-import org.jackhuang.hmcl.util.StringUtils;
 import org.jackhuang.hmcl.util.gson.JsonSerializable;
 import org.jackhuang.hmcl.util.gson.JsonUtils;
 import org.jackhuang.hmcl.util.gson.TolerableValidationException;
@@ -69,7 +67,7 @@ public final class TerracottaNodeList {
                                     return false;
                                 }
 
-                                return StringUtils.isBlank(node.region) || node.region.equalsIgnoreCase(RegionUtils.MACHINE_REGION);
+                                return true;
                             })
                             .map(it -> WebURL.parse(it.url()))
                             .toList();

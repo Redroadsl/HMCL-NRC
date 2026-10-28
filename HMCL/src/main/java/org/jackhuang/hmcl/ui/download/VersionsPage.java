@@ -42,6 +42,7 @@ import org.jackhuang.hmcl.ui.wizard.Navigation;
 import org.jackhuang.hmcl.ui.wizard.Refreshable;
 import org.jackhuang.hmcl.ui.wizard.WizardPage;
 import org.jackhuang.hmcl.util.NativePatcher;
+import org.jackhuang.hmcl.util.RegionUtils;
 import org.jackhuang.hmcl.util.StringUtils;
 import org.jackhuang.hmcl.util.i18n.I18n;
 import org.jackhuang.hmcl.util.platform.OperatingSystem;
@@ -437,7 +438,21 @@ public final class VersionsPage extends Control implements WizardPage, Refreshab
                 root.setCenter(transitionPane);
             }
 
-            this.getChildren().setAll(root);
+            if ("CN".equals(RegionUtils.MACHINE_REGION)) {
+                BorderPane wrapper = new BorderPane();
+
+                HintPane hint = new HintPane(MessageDialogPane.MessageType.INFO);
+                hint.setSegment(i18n("download.china"));
+
+                BorderPane.setMargin(hint, new Insets(10, 10, 0, 10));
+
+                wrapper.setTop(hint);
+                wrapper.setCenter(root);
+
+                this.getChildren().setAll(wrapper);
+            } else {
+                this.getChildren().setAll(root);
+            }
         }
 
         private void updateList() {

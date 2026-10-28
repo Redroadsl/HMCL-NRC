@@ -537,7 +537,21 @@ public class DownloadListPage extends Control implements DecoratorPage {
                 listView.setCellFactory(x -> new DownloadListCell(getSkinnable(), listView, iconLoader));
             }
 
-            this.getChildren().setAll(pane);
+            if ("CN".equals(RegionUtils.MACHINE_REGION)) {
+                BorderPane wrapper = new BorderPane();
+
+                HintPane hint = new HintPane(MessageDialogPane.MessageType.INFO);
+                hint.setSegment(i18n("download.china"));
+
+                BorderPane.setMargin(hint, new Insets(10, 10, 0, 10));
+
+                wrapper.setTop(hint);
+                wrapper.setCenter(pane);
+
+                this.getChildren().setAll(wrapper);
+            } else {
+                this.getChildren().setAll(pane);
+            }
         }
 
         private record CategoryIndented(int indent, RemoteAddonRepository.Category category) {
